@@ -3,8 +3,7 @@ byte red_pin = 3;
 byte blue_pin = 5;
 byte green_pin = 6;
 
-void setup() {
-  // put your setup code here, to run once:
+void setup() {  
   pinMode(red_pin, OUTPUT);
   pinMode(blue_pin, OUTPUT);
   pinMode(green_pin, OUTPUT);
@@ -27,41 +26,45 @@ void loop() {
       light_blink(green_pin);
       break;
     case 4:
-      light_fade_up(red_pin);
-      light_fade_up(green_pin);
-      light_fade_down(red_pin);
-      light_fade_up(blue_pin);
-      light_fade_down(blue_pin);
-      light_fade_up(red_pin);
-      light_fade_down(blue_pin);
+      rainbow();
       break;
   }
 }
 
+void reset(){
+  analogWrite(red_pin, 0);
+  analogWrite(blue_pin, 0);
+  analogWrite(green_pin, 0);
+}
+
 void light_blink(byte pin_number){
-  analogWrite(pin_number, 255);
+  reset();
   delay(100);
-  analogWrite(pin_number, 0);
+  analogWrite(pin_number, 255);
   delay(100);
 }
 
 void light_fade_up(byte pin_number){
   for (byte x = 0; x < 255; x++){
     analogWrite(pin_number, x);
-    delay(30);
+    delay(10);
   }
 }
 
 void light_fade_down(byte pin_number){
   for (byte x = 255; x > 0; x--){
     analogWrite(pin_number, x);
-    delay(30);
+    delay(10);
   }
 }
 
-void two_light_fade(byte pin_number1, byte pin_number2){
-  light_fade_up(pin_number1);
-  light_fade_up(pin_number2);
-  light_fade_down(pin_number1);
-  light_fade_down(pin_number2);
+void rainbow(){
+  reset();
+  light_fade_up(red_pin);
+  light_fade_up(green_pin);
+  light_fade_down(red_pin);
+  light_fade_up(blue_pin);
+  light_fade_down(green_pin);
+  light_fade_up(red_pin);
+  light_fade_down(blue_pin);
 }
