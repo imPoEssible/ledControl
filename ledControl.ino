@@ -2,11 +2,16 @@ int light_mode = 0;
 byte red_pin = 3;
 byte blue_pin = 5;
 byte green_pin = 6;
+byte photoDiode_pin = A5;
+
+int brightness;
+long prevTime = 0;
 
 void setup() {  
   pinMode(red_pin, OUTPUT);
   pinMode(blue_pin, OUTPUT);
   pinMode(green_pin, OUTPUT);
+  pinMode(photoDiode_pin, INPUT);
   Serial.begin(9600);
 }
 
@@ -28,6 +33,12 @@ void loop() {
     case 4:
       rainbow();
       break;
+    case 5:
+      if ((millis() - prevTime) > 1000){
+        brightness = map(analogRead(photoDiode_pin), 500, 900, 0, 255);
+        prevTime = millis();
+      }
+      analogWrite(red_pin, brightness);
   }
 }
 
